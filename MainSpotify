@@ -1,0 +1,77 @@
+package spotify;
+import java.util.Scanner;
+/**
+ *
+ * @author Muhammad Rizki Desca Firmansyah
+ * NIM : 25104410041
+ * Kelas : 2B
+ * Prodi : Teknik Informatika
+ */
+public class MainSpotify {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Playlist myPlaylist = new Playlist();
+        int pilihan;
+        
+        System.out.println("==================================================");
+        System.out.println("                 SPOTIFY PLAYLIST                 ");
+        System.out.println("==================================================");
+        
+        myPlaylist.addSong("Hati-Hati di Jalan", "Tulus");
+        myPlaylist.addSong("Sial", "Mahalini");
+        myPlaylist.addSong("Glimpse of Us", "Joji");
+        myPlaylist.addSong("Die With A Smile", "Bruno Mars & Lady Gaga");
+        
+        do {
+            System.out.println("\n=== MENU UTAMA ===");
+            System.out.println(" 1. Tambah Lagu");
+            System.out.println(" 2. Putar Lagu Saat Ini");
+            System.out.println(" 3. Lagu Berikutnya (Next)");
+            System.out.println(" 4. Lagu Sebelumnya (Prev)");
+            System.out.println(" 5. Tampilkan Playlist");
+            System.out.println(" 0. Keluar");
+            System.out.print("\nPilih menu: ");
+            
+            pilihan = scanner.nextInt();
+            scanner.nextLine();
+            
+            System.out.println();
+            
+            switch (pilihan) {
+                case 1:
+                    System.out.print("Masukkan judul lagu: ");
+                    String title = scanner.nextLine();
+                    System.out.print("Masukkan nama artis: ");
+                    String artist = scanner.nextLine();
+                    myPlaylist.addSongWithMessage(title, artist);
+                    break;
+                    
+                case 2:
+                    myPlaylist.playCurrent();
+                    break;
+                    
+                case 3:
+                    myPlaylist.nextTrack();
+                    break;
+                    
+                case 4:
+                    myPlaylist.prevTrack();
+                    break;
+                    
+                case 5:
+                    myPlaylist.displayPlaylist();
+                    break;
+                    
+                case 0:
+                    System.out.println("Thanks Telah Using Program From Kelompok 2 Yang Very Cool ini..!!");
+                    break;
+                    
+                default:
+                    System.out.println("[GAGAL] Pilihan tidak valid!");
+            }
+            
+        } while (pilihan != 0);
+        
+        scanner.close();
+    }
+}
