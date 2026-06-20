@@ -17,6 +17,7 @@ public class MainSpotify {
         System.out.println("                 SPOTIFY PLAYLIST                 ");
         System.out.println("==================================================");
         
+        // Data awal
         myPlaylist.addSong("Hati-Hati di Jalan", "Tulus");
         myPlaylist.addSong("Sial", "Mahalini");
         myPlaylist.addSong("Glimpse of Us", "Joji");
@@ -24,11 +25,13 @@ public class MainSpotify {
         
         do {
             System.out.println("\n=== MENU UTAMA ===");
-            System.out.println(" 1. Tambah Lagu");
+            System.out.println(" 1. Tambah Lagu ");
             System.out.println(" 2. Putar Lagu Saat Ini");
             System.out.println(" 3. Lagu Berikutnya (Next)");
             System.out.println(" 4. Lagu Sebelumnya (Prev)");
             System.out.println(" 5. Tampilkan Playlist");
+            System.out.println(" 6. Sisipkan Lagu ");
+            System.out.println(" 7. Hapus Lagu");
             System.out.println(" 0. Keluar");
             System.out.print("\nPilih menu: ");
             
@@ -39,6 +42,7 @@ public class MainSpotify {
             
             switch (pilihan) {
                 case 1:
+                    // Tambah di akhir
                     System.out.print("Masukkan judul lagu: ");
                     String title = scanner.nextLine();
                     System.out.print("Masukkan nama artis: ");
@@ -47,19 +51,48 @@ public class MainSpotify {
                     break;
                     
                 case 2:
+                    // Putar lagu saat ini
                     myPlaylist.playCurrent();
                     break;
                     
                 case 3:
+                    // Next
                     myPlaylist.nextTrack();
                     break;
                     
                 case 4:
+                    // Prev
                     myPlaylist.prevTrack();
                     break;
                     
                 case 5:
+                    // Tampilkan playlist
                     myPlaylist.displayPlaylist();
+                    break;
+                    
+                case 6:
+                    // SISIPKAN LAGU 
+                    System.out.print("Masukkan judul lagu: ");
+                    String titleInsert = scanner.nextLine();
+                    System.out.print("Masukkan nama artis: ");
+                    String artistInsert = scanner.nextLine();
+                    System.out.print("Masukkan posisi sisip (1-" + (myPlaylist.getSize() + 1) + "): ");
+                    int position = scanner.nextInt();
+                    scanner.nextLine();
+                    myPlaylist.insertSongAt(titleInsert, artistInsert, position);
+                    break;
+                    
+                case 7:
+                    // HAPUS LAGU 
+                    if (myPlaylist.getSize() == 0) {
+                        System.out.println("[INFO] Playlist kosong! Tidak ada lagu untuk dihapus.");
+                        break;
+                    }
+                    myPlaylist.displayPlaylist();
+                    System.out.print("Masukkan nomor lagu yang akan dihapus (1-" + myPlaylist.getSize() + "): ");
+                    int deletePos = scanner.nextInt();
+                    scanner.nextLine();
+                    myPlaylist.deleteSong(deletePos);
                     break;
                     
                 case 0:
