@@ -1,5 +1,4 @@
 package spotify;
-
 /**
  *
  * @author Muhammad Rizki Desca Firmansyah
@@ -79,8 +78,6 @@ public class Playlist {
         System.out.println("                 PLAYLIST SPOTIFY                 ");
         System.out.println("==================================================");
         
-        
-        
         Song temp = head;
         int index = 1;
         while (temp != null) {
@@ -95,9 +92,164 @@ public class Playlist {
         System.out.println("==================================================\n");
     }
 
-    // Method untuk menambah lagu dengan output (untuk input user)
+    // ===== FITUR 1: MENYISIPKAN LAGU =====
+    public void insertSongAt(String title, String artist, int position) {
+        // Validasi posisi
+        if (position < 1 || position > size + 1) {
+            System.out.println("[GAGAL] Posisi tidak valid! (1-" + (size + 1) + ")");
+            return;
+        }
+
+        // Jika posisi di akhir, cukup tambah di akhir
+        if (position == size + 1) {
+            addSong(title, artist);
+            System.out.println("[BERHASIL] Menambahkan di akhir: " + title + " - " + artist);
+            return;
+        }
+
+        // Cek apakah lagu sudah ada (mencegah lagu diduplikat)
+        if (isSongExists(title, artist)) {
+            System.out.println("[GAGAL] Lagu \"" + title + " - " + artist + "\" sudah ada di playlist!");
+            return;
+        }
+
+        Song newSong = new Song(title, artist);
+        
+        // Jika posisi di awal (sebelum head)
+        if (position == 1) {
+            newSong.setNext(head);
+            head.setPrev(newSong);
+            head = newSong;
+            // Jika playlist sebelumnya kosong, set currentTrack
+            if (size == 0) {
+                currentTrack = head;
+            }
+        } else {
+            // Cari lagu pada posisi target
+            // current akan menunjuk ke node pada posisi 'position'
+            Song current = head;
+            for (int i = 1; i < position; i++) {
+                current = current.getNext();
+            }
+            
+            // PERBAIKAN: Sisipkan SEBELUM current
+            Song prev = current.getPrev();
+            
+            newSong.setNext(current);
+            newSong.setPrev(prev);
+            
+            if (prev != null) {
+                prev.setNext(newSong);
+            }
+            current.setPrev(newSong);
+        }
+        
+        size++;
+        System.out.println("[BERHASIL] Menyisipkan: " + title + " - " + artist + " pada posisi " + position);
+    }
+
+    // ===== FITUR 2: MENGHAPUS LAGU =====
+    public void deleteSong(int position) {
+        if (head == null) {
+            System.out.println("[INFO] Playlist kosong!");
+            return;
+        }
+
+        if (position < 1 || position > size) {
+            System.out.println("[GAGAL] Posisi tidak valid! (1-" + size + ")");
+            return;
+        }
+
+        Song toDelete = head;
+        
+        // Cari lagu yang akan dihapus
+        for (int i = 1; i < position; i++) {
+            toDelete = toDelete.getNext();
+        }
+
+        String deletedTitle = toDelete.getTitle();
+        String deletedArtist = toDelete.getArtist();
+
+        // Jika hanya ada 1 lagu
+        if (size == 1) {
+            head = null;
+            tail = null;
+            currentTrack = null;
+        } 
+        // Jika menghapus head
+        else if (toDelete == head) {
+            head = head.getNext();
+            head.setPrev(null);
+            if (currentTrack == toDelete) {
+                currentTrack = head;
+            }
+        } 
+        // Jika menghapus tail
+        else if (toDelete == tail) {
+            tail = tail.getPrev();
+            tail.setNext(null);
+            if (currentTrack == toDelete) {
+                currentTrack = tail;
+            }
+        } 
+        // Menghapus di tengah
+        else {
+            Song prev = toDelete.getPrev();
+            Song next = toDelete.getNext();
+            prev.setNext(next);
+            next.setPrev(prev);
+            
+            if (currentTrack == toDelete) {
+                currentTrack = (next != null) ? next : prev;
+            }
+        }
+
+        size--;
+        System.out.println("[BERHASIL] Menghapus: " + deletedTitle + " - " + deletedArtist);
+        
+        if (size == 0) {
+            System.out.println("[INFO] Playlist sekarang kosong!");
+        }
+    }
+
+    // ===== METHOD TAMBAHAN: CEK DUPLIKAT =====
+    public boolean isSongExists(String title, String artist) {
+        Song temp = head;
+        while (temp != null) {
+            if (temp.getTitle().equalsIgnoreCase(title) && 
+                temp.getArtist().equalsIgnoreCase(artist)) {
+                return true;
+            }
+            temp = temp.getNext();
+        }
+        return false;
+    }
+
+    // ===== METHOD TAMBAHAN: MENAMBAH LAGU DENGAN OUTPUT =====
     public void addSongWithMessage(String title, String artist) {
+        // Cek duplikat sebelum menambah
+        if (isSongExists(title, artist)) {
+            System.out.println("[GAGAL] Lagu \"" + title + " - " + artist + "\" sudah ada di playlist!");
+            return;
+        }
         addSong(title, artist);
         System.out.println("[BERHASIL] Menambahkan: " + title + " - " + artist);
+    }
+
+    // ===== GETTER =====
+    public int getSize() {
+        return size;
+    }
+
+    public Song getHead() {
+        return head;
+    }
+
+    public Song getTail() {
+        return tail;
+    }
+
+    public Song getCurrentTrack() {
+        return currentTrack;
     }
 }
