@@ -98,7 +98,8 @@ public class MainSpotify {
                     break;
                     
                 case 0:
-                    System.out.println("Thanks Telah Using Program From Kelompok 2 Yang Very Cool ini..!!");
+                    System.out.println("Thanks Telah Using Program From Kelompok 2 Yang Very Cool Ini..!!");
+                    System.out.println("Rawrrrr....");
                     break;
                     
                 default:
