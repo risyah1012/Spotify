@@ -1,0 +1,103 @@
+package spotify;
+
+/**
+ *
+ * @author Muhammad Rizki Desca Firmansyah
+ * NIM : 25104410041
+ * Kelas : 2B
+ * Prodi : Teknik Informatika
+ */
+public class Playlist {
+    private Song head = null;
+    private Song tail = null;
+    private Song currentTrack = null;
+    private int size = 0;
+
+    // 1. Menambah lagu di akhir playlist
+    public void addSong(String title, String artist) {
+        Song newSong = new Song(title, artist);
+        
+        if (head == null) {
+            head = newSong;
+            tail = newSong;
+            currentTrack = head;
+        } else {
+            tail.setNext(newSong);
+            newSong.setPrev(tail);
+            tail = newSong;
+        }
+        size++;
+    }
+
+    // 2. Memutar lagu saat ini
+    public void playCurrent() {
+        if (currentTrack != null) {
+            System.out.println("[NOW PLAYING] " + currentTrack.getTitle() + " - " + currentTrack.getArtist());
+        } else {
+            System.out.println("[INFO] Playlist kosong!");
+        }
+    }
+
+    // 3. Maju ke lagu berikutnya (Next)
+    public void nextTrack() {
+        if (currentTrack == null) {
+            System.out.println("[INFO] Playlist kosong!");
+            return;
+        }
+        
+        if (currentTrack.getNext() != null) {
+            currentTrack = currentTrack.getNext();
+            System.out.println("[NEXT] " + currentTrack.getTitle() + " - " + currentTrack.getArtist());
+        } else {
+            System.out.println("[INFO] Anda berada di akhir playlist!");
+        }
+    }
+
+    // 4. Kembali ke lagu sebelumnya (Previous)
+    public void prevTrack() {
+        if (currentTrack == null) {
+            System.out.println("[INFO] Playlist kosong!");
+            return;
+        }
+        
+        if (currentTrack.getPrev() != null) {
+            currentTrack = currentTrack.getPrev();
+            System.out.println("[PREV] " + currentTrack.getTitle() + " - " + currentTrack.getArtist());
+        } else {
+            System.out.println("[INFO] Anda berada di awal playlist!");
+        }
+    }
+
+    // 5. Menampilkan daftar semua lagu di playlist
+    public void displayPlaylist() {
+        if (head == null) {
+            System.out.println("\n[INFO] Playlist kosong!");
+            return;
+        }
+        
+        System.out.println("\n==================================================");
+        System.out.println("                 PLAYLIST SPOTIFY                 ");
+        System.out.println("==================================================");
+        
+        
+        
+        Song temp = head;
+        int index = 1;
+        while (temp != null) {
+            String nowPlaying = (temp == currentTrack) ? " [NOW PLAYING]" : "";
+            System.out.println(" " + index + ". " + temp.getTitle() + " - " + temp.getArtist() + nowPlaying);
+            temp = temp.getNext();
+            index++;
+        }
+        
+        System.out.println("--------------------------------------------------");
+        System.out.println("Total Lagu: " + size);
+        System.out.println("==================================================\n");
+    }
+
+    // Method untuk menambah lagu dengan output (untuk input user)
+    public void addSongWithMessage(String title, String artist) {
+        addSong(title, artist);
+        System.out.println("[BERHASIL] Menambahkan: " + title + " - " + artist);
+    }
+}
