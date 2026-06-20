@@ -1,4 +1,5 @@
 package spotify;
+
 /**
  *
  * @author Muhammad Rizki Desca Firmansyah
@@ -6,6 +7,7 @@ package spotify;
  * Kelas : 2B
  * Prodi : Teknik Informatika
  */
+
 public class Playlist {
     private Song head = null;
     private Song tail = null;
